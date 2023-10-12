@@ -80,7 +80,7 @@ app.delete('/products/:id', async (req, res) => {
 
 const runServer = async () => {
     try {
-        await mongoose.connect('mongodb+srv://root:PT9ukN1mO5bBQPgi@cluster0.kipkylu.mongodb.net/Node-Api?retryWrites=true&w=majority');
+        await mongoose.connect('<placeURI>');
         console.log('Connected to MongoDB!');
 
         app.listen(PORT, () => {
