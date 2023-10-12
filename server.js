@@ -12,6 +12,7 @@ app.get('/', (req, res) => {
     res.send('Hello from Node');
 });
 
+// fetch all Products
 app.get('/products', async (req, res) => {
     try {
         const products = await Product.find({});
@@ -21,6 +22,7 @@ app.get('/products', async (req, res) => {
     }
 });
 
+// find a Product by ID
 app.get('/products/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -31,6 +33,8 @@ app.get('/products/:id', async (req, res) => {
     }
 })
 
+
+// create a Product
 app.post('/products', async (req, res) => {
     try {
         const product = await Product.create(req.body);
@@ -39,6 +43,21 @@ app.post('/products', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+// update a Product
+app.put('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body);
+        if (!product) {
+            return res.status(404).json({ message: `Unable to find Product with ID: ${id}` });
+        }
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
 
 const runServer = async () => {
     try {
