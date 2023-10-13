@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const app = express();
 const productRoute = require('./routes/productRoute');
 
+const errorMiddleware = require('./middleware/errorMiddleware');
+
 const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL;
 
@@ -14,6 +16,9 @@ app.use(express.json());
 
 // routes
 app.use('/api/products', productRoute);
+
+
+app.use(errorMiddleware);
 
 
 const runServer = async () => {
