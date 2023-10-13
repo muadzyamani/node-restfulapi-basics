@@ -2,72 +2,21 @@ const express = require('express');
 
 const router = express.Router();
 
-const Product = require('../models/productModel');
+const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');
 
 // fetch all Products
-router.get('/', async (req, res) => {
-    try {
-        const products = await Product.find({});
-        console.log('Fetched all Products.');
-        res.status(200).json(products);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+router.get('/', getProducts);
 
 // find a Product from ID
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findById(id);
-        console.log(`Found a product with ID: ${id}`)
-        res.status(200).json(product); 
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-})
-
+router.get('/:id', getProduct);
 
 // create a Product
-router.post('/', async (req, res) => {
-    try {
-        const product = await Product.create(req.body);
-        console.log(`Product created.`)
-        res.status(200).json(product);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+router.post('/', createProduct);
 
 // update a Product
-router.put('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findByIdAndUpdate(id, req.body);
-        if (!product) {
-            return res.status(404).json({ message: `Unable to find Product with ID: ${id}` });
-        }
-        const updatedProduct = await Product.findById(id);
-        console.log(`Product updated.`)
-        res.status(200).json(updatedProduct);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+router.put('/:id', updateProduct);
 
 // delete a Product from ID
-router.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findByIdAndDelete(id);
-        if (!product) {
-            return res.status(404).json({ message: `Unable to find Product with ID: ${id}` });
-        }
-        console.log(`Product deleted.`)
-        res.status(200).json(product);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+router.delete('/:id',deleteProduct);
 
 module.exports = router;
